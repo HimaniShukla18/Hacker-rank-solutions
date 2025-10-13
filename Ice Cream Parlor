@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int* icecreamParlor(int m, int* cost, int n) {
+    int* result = malloc(2 * sizeof(int));
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (cost[i] + cost[j] == m) {
+                result[0] = i + 1; // 1-based indexing
+                result[1] = j + 1;
+                return result;
+            }
+        }
+    }
+    return NULL; // Should never happen due to problem constraints
+}
+
+int main() {
+    int t;
+    scanf("%d", &t);
+
+    for (int trip = 0; trip < t; trip++) {
+        int m, n;
+        scanf("%d", &m);
+        scanf("%d", &n);
+
+        int* cost = malloc(n * sizeof(int));
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &cost[i]);
+        }
+
+        int* result = icecreamParlor(m, cost, n);
+        if (result) {
+            printf("%d %d\n", result[0], result[1]);
+            free(result);
+        }
+
+        free(cost);
+    }
+
+    return 0;
+}
