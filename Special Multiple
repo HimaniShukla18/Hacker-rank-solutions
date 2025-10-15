@@ -1,0 +1,50 @@
+#include <iostream>
+#include <queue>
+#include <unordered_set>
+using namespace std;
+
+// Function to find the smallest number made of 9s and 0s divisible by n
+string findSmallestMultiple(int n) {
+    queue<pair<string, int>> q;
+    unordered_set<int> visited;
+
+    q.push({"9", 9 % n});
+    visited.insert(9 % n);
+
+    while (!q.empty()) {
+        auto [num, rem] = q.front();
+        q.pop();
+
+        if (rem == 0)
+            return num;
+
+        // Append '0'
+        string next0 = num + "0";
+        int rem0 = (rem * 10) % n;
+        if (!visited.count(rem0)) {
+            q.push({next0, rem0});
+            visited.insert(rem0);
+        }
+
+        // Append '9'
+        string next9 = num + "9";
+        int rem9 = (rem * 10 + 9) % n;
+        if (!visited.count(rem9)) {
+            q.push({next9, rem9});
+            visited.insert(rem9);
+        }
+    }
+
+    return ""; // Should never reach here
+}
+
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        int N;
+        cin >> N;
+        cout << findSmallestMultiple(N) << endl;
+    }
+    return 0;
+}
