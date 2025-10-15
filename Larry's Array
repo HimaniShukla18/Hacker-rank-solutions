@@ -1,0 +1,39 @@
+
+#include <stdio.h>
+
+// Function to check if array can be sorted using allowed rotations
+const char* larrysArray(int A[], int n) {
+    int inversions = 0;
+
+    // Count total number of inversions
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (A[i] > A[j]) {
+                inversions++;
+            }
+        }
+    }
+
+    // If inversion count is even, return "YES", else "NO"
+    return (inversions % 2 == 0) ? "YES" : "NO";
+}
+
+int main() {
+    int t;
+    scanf("%d", &t);  // Number of test cases
+
+    while (t--) {
+        int n;
+        scanf("%d", &n);  // Size of array
+
+        int A[n];
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &A[i]);
+        }
+
+        // Output result for each test case
+        printf("%s\n", larrysArray(A, n));
+    }
+
+    return 0;
+}
