@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+long strangeCounter(long t) {
+    long cycle_start = 3;
+
+    while (t > cycle_start) {
+        t -= cycle_start;
+        cycle_start *= 2;
+    }
+
+    return cycle_start - t + 1;
+}
+
+int main() {
+    long t;
+    scanf("%ld", &t);
+    printf("%ld\n", strangeCounter(t));
+    return 0;
+}
