@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+
+// Check if a number is a power of 2
+bool isPowerOfTwo(unsigned long long n) {
+    return (n & (n - 1)) == 0;
+}
+
+// Find the largest power of 2 less than n
+unsigned long long largestPowerOfTwoLessThan(unsigned long long n) {
+    unsigned long long p = 1;
+    while (p << 1 <= n) {
+        p <<= 1;
+    }
+    return p;
+}
+
+string counterGame(unsigned long long n) {
+    int moves = 0;
+
+    while (n > 1) {
+        if (isPowerOfTwo(n)) {
+            n /= 2;
+        } else {
+            n -= largestPowerOfTwoLessThan(n);
+        }
+        moves++;
+    }
+
+    return (moves % 2 == 0) ? "Richard" : "Louise";
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        unsigned long long n;
+        cin >> n;
+        cout << counterGame(n) << endl;
+    }
+    return 0;
+}
