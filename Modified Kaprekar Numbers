@@ -1,0 +1,38 @@
+#include <iostream>
+#include <cmath>
+#include <string>
+using namespace std;
+
+void kaprekarNumbers(int p, int q) {
+    bool found = false;
+
+    for (int i = p; i <= q; i++) {
+        long long sq = (long long)i * i;
+        string str = to_string(sq);
+        int len = str.length();
+        int d = to_string(i).length();
+
+        string left = (len > d) ? str.substr(0, len - d) : "0";
+        string right = str.substr(len - d);
+
+        int l = stoi(left);
+        int r = stoi(right);
+
+        if (l + r == i) {
+            cout << i << " ";
+            found = true;
+        }
+    }
+
+    if (!found)
+        cout << "INVALID RANGE";
+
+    cout << endl;
+}
+
+int main() {
+    int p, q;
+    cin >> p >> q;
+    kaprekarNumbers(p, q);
+    return 0;
+}
