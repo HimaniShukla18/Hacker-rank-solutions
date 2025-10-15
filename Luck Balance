@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Comparator for descending sort
+int compare(const void *a, const void *b) {
+    return (*(int *)b - *(int *)a);
+}
+
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+
+    int totalLuck = 0;
+    int important[1000]; // Assuming max 1000 contests
+    int impCount = 0;
+
+    for (int i = 0; i < n; i++) {
+        int luck, importance;
+        scanf("%d %d", &luck, &importance);
+
+        if (importance == 0) {
+            totalLuck += luck; // Always lose unimportant contests
+        } else {
+            important[impCount++] = luck; // Store important contest luck
+        }
+    }
+
+    // Sort important contests by luck descending
+    qsort(important, impCount, sizeof(int), compare);
+
+    // Lose top k important contests, win the rest
+    for (int i = 0; i < impCount; i++) {
+        if (i < k) {
+            totalLuck += important[i];
+        } else {
+            totalLuck -= important[i];
+        }
+    }
+
+    printf("%d\n", totalLuck);
+    return 0;
+}
