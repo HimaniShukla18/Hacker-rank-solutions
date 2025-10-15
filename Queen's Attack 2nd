@@ -1,0 +1,43 @@
+#include <iostream>
+#include <set>
+using namespace std;
+
+int queensAttack(int n, int k, int r_q, int c_q, set<pair<int, int>>& obstacles) {
+    int directions[8][2] = {
+        {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // up, down, right, left
+        {1, 1}, {1, -1}, {-1, 1}, {-1, -1} // diagonals
+    };
+
+    int count = 0;
+
+    for (int d = 0; d < 8; d++) {
+        int r = r_q + directions[d][0];
+        int c = c_q + directions[d][1];
+
+        while (r >= 1 && r <= n && c >= 1 && c <= n && obstacles.find({r, c}) == obstacles.end()) {
+            count++;
+            r += directions[d][0];
+            c += directions[d][1];
+        }
+    }
+
+    return count;
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+
+    int r_q, c_q;
+    cin >> r_q >> c_q;
+
+    set<pair<int, int>> obstacles;
+    for (int i = 0; i < k; i++) {
+        int r, c;
+        cin >> r >> c;
+        obstacles.insert({r, c});
+    }
+
+    cout << queensAttack(n, k, r_q, c_q, obstacles) << endl;
+    return 0;
+}
