@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+// Function to compute maximum height of triangle
+int maxTriangleHeight(int coins) {
+    int height = 0;
+    int required = 0;
+
+    while (required + (height + 1) <= coins) {
+        height++;
+        required += height;
+    }
+
+    return height;
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        int N;
+        scanf("%d", &N);
+        printf("%d\n", maxTriangleHeight(N));
+    }
+
+    return 0;
+}
