@@ -1,0 +1,21 @@
+def flatlandSpaceStations(n, c):
+    # Sort the space station indices
+    c.sort()
+
+    # Max distance could be:
+    # - From first city to first space station
+    # - From last city to last space station
+    # - Max gap between two space stations divided by 2
+    max_distance = max(c[0], n - 1 - c[-1])
+
+    # Check gaps between consecutive space stations
+    for i in range(1, len(c)):
+        gap = (c[i] - c[i - 1]) // 2
+        max_distance = max(max_distance, gap)
+
+    return max_distance
+
+# Input handling
+n, m = map(int, input().split())
+c = list(map(int, input().split()))
+print(flatlandSpaceStations(n, c))
