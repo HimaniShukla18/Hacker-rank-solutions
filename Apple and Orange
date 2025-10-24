@@ -1,0 +1,44 @@
+#include <stdio.h>
+
+void countApplesAndOranges(int s, int t, int a, int b, int apples[], int m, int oranges[], int n) {
+    int appleCount = 0, orangeCount = 0;
+
+    // Count apples that fall on the house
+    for (int i = 0; i < m; i++) {
+        int landingPosition = a + apples[i];
+        if (landingPosition >= s && landingPosition <= t) {
+            appleCount++;
+        }
+    }
+
+    // Count oranges that fall on the house
+    for (int i = 0; i < n; i++) {
+        int landingPosition = b + oranges[i];
+        if (landingPosition >= s && landingPosition <= t) {
+            orangeCount++;
+        }
+    }
+
+    printf("%d\n%d\n", appleCount, orangeCount);
+}
+
+int main() {
+    int s, t, a, b, m, n;
+    scanf("%d %d", &s, &t);
+    scanf("%d %d", &a, &b);
+    scanf("%d %d", &m, &n);
+
+    int apples[m], oranges[n];
+
+    for (int i = 0; i < m; i++) {
+        scanf("%d", &apples[i]);
+    }
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &oranges[i]);
+    }
+
+    countApplesAndOranges(s, t, a, b, apples, m, oranges, n);
+
+    return 0;
+}
