@@ -1,0 +1,14 @@
+def superReducedString(s):
+    stack = []
+    for char in s:
+        if stack and stack[-1] == char:
+            stack.pop()  # Remove the matching pair
+        else:
+            stack.append(char)
+    
+    reduced = ''.join(stack)
+    return reduced if reduced else "Empty String"
+
+# Input handling
+s = input().strip()
+print(superReducedString(s))
