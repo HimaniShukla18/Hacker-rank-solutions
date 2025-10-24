@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+// Function to compute GCD using Euclidean algorithm
+int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+// Function to check if it's possible to measure exactly c gallons
+const char* canMeasure(int a, int b, int c) {
+    if (c > a && c > b)
+        return "NO";
+    return (c % gcd(a, b) == 0) ? "YES" : "NO";
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+    while (T--) {
+        int a, b, c;
+        scanf("%d %d %d", &a, &b, &c);
+        printf("%s\n", canMeasure(a, b, c));
+    }
+    return 0;
+}
+
