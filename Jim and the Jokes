@@ -1,0 +1,32 @@
+def to_decimal(base, value):
+    """Convert value (as int) from given base to decimal. Return -1 if invalid."""
+    result = 0
+    multiplier = 1
+    while value > 0:
+        digit = value % 10
+        if digit >= base:
+            return -1  # invalid digit for base
+        result += digit * multiplier
+        multiplier *= base
+        value //= 10
+    return result
+
+# Read input
+n = int(input())
+events = []
+for _ in range(n):
+    m, d = map(int, input().split())
+    dec = to_decimal(m, d)
+    if dec != -1:
+        events.append(dec)
+
+# Count jokes: number of unique pairs with same decimal value
+from collections import Counter
+
+count = Counter(events)
+jokes = 0
+for val in count.values():
+    if val > 1:
+        jokes += val * (val - 1) // 2  # combination of pairs
+
+print(jokes)
