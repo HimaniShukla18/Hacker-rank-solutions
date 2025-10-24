@@ -1,0 +1,24 @@
+def organizingContainers(container):
+    n = len(container)
+    
+    # Total balls in each container
+    container_capacity = [sum(row) for row in container]
+    
+    # Total balls of each type
+    type_count = [sum(container[i][j] for i in range(n)) for j in range(n)]
+    
+    # If sorted capacities match sorted type counts, it's possible
+    if sorted(container_capacity) == sorted(type_count):
+        return "Possible"
+    else:
+        return "Impossible"
+
+# Input handling
+q = int(input())
+for _ in range(q):
+    n = int(input())
+    container = []
+    for _ in range(n):
+        row = list(map(int, input().split()))
+        container.append(row)
+    print(organizingContainers(container))
