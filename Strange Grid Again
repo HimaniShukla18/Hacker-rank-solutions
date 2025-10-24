@@ -1,0 +1,17 @@
+def strange_grid(r, c):
+    # Each pair of rows (even and odd) forms a block of 2 rows
+    # Even-indexed rows (1st, 3rd, 5th...) start with even numbers
+    # Odd-indexed rows (2nd, 4th, 6th...) start with odd numbers
+
+    # Determine the base value for the row block
+    base = ((r - 1) // 2) * 10
+
+    # If the row is odd (1st, 3rd...), start with even numbers
+    if r % 2 == 1:
+        return base + (2 * (c - 1))
+    else:
+        return base + (2 * (c - 1)) + 1
+
+# Input
+r, c = map(int, input().split())
+print(strange_grid(r, c))
