@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+// Struct to hold price and its original year index
+typedef struct {
+    long long price;
+    int year;
+} PriceYear;
+
+// Comparator function for qsort to sort by price
+int compare(const void *a, const void *b) {
+    PriceYear *p1 = (PriceYear *)a;
+    PriceYear *p2 = (PriceYear *)b;
+    if (p1->price < p2->price) return -1;
+    else if (p1->price > p2->price) return 1;
+    else return 0;
+}
+
+long long minimumLoss(long long *price, int n) {
+    PriceYear *arr = (PriceYear *)malloc(n * sizeof(PriceYear));
+    for (int i = 0; i < n; i++) {
+        arr[i].price = price[i];
+        arr[i].year = i;
+    }
+    
+    // Sort by price
+    qsort(arr, n, sizeof(PriceYear), compare);
+    
+    long long min_loss = LLONG_MAX;
+    for (int i = 0; i < n - 1; i++) {
+        // Check adjacent pairs for minimal loss
+        if (arr[i].year > arr[i + 1].year) {
+            long long loss = arr[i + 1].price - arr[i].price;
+            if (loss < 0) loss = -loss;
+            if (loss < min_loss) {
+                min_loss = loss;
+            }
+        }
+    }
+    
+    free(arr);
+    return min_loss;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    long long *prices = (long long *)malloc(n * sizeof(long long));
+    for (int i = 0; i < n; i++) {
+        scanf("%lld", &prices[i]);
+    }
+    
+    long long result = minimumLoss(prices, n);
+    printf("%lld\n", result);
+    
+    free(prices);
+    return 0;
+}
