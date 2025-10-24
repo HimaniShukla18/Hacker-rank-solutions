@@ -1,0 +1,15 @@
+def marcsCakewalk(calorie):
+    # Sort the calorie list in descending order
+    calorie.sort(reverse=True)
+    
+    # Calculate total miles using the formula: sum(c[i] * 2^i)
+    total_miles = 0
+    for i in range(len(calorie)):
+        total_miles += calorie[i] * (2 ** i)
+    
+    return total_miles
+
+# Input handling
+n = int(input())
+calorie = list(map(int, input().split()))
+print(marcsCakewalk(calorie))
