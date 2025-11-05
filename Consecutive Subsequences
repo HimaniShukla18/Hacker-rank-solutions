@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_K 1000001
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        int n, k;
+        scanf("%d %d", &n, &k);
+
+        int *arr = (int *)malloc(n * sizeof(int));
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &arr[i]);
+        }
+
+        // Frequency array to count prefix sum mod k
+        int *modCount = (int *)calloc(k, sizeof(int));
+        modCount[0] = 1; // Empty prefix sum is divisible by k
+
+        int prefixSum = 0;
+        long long result = 0;
+
+        for (int i = 0; i < n; i++) {
+            prefixSum = (prefixSum + arr[i]) % k;
+            if (prefixSum < 0) prefixSum += k; // Handle negative mods
+
+            result += modCount[prefixSum];
+            modCount[prefixSum]++;
+        }
+
+        printf("%lld\n", result);
+
+        free(arr);
+        free(modCount);
+    }
+
+    return 0;
+}
