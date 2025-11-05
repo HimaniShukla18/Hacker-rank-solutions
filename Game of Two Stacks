@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+int maxScore(int maxSum, int *a, int n, int *b, int m) {
+    int sum = 0, countA = 0, countB = 0, maxCount = 0;
+
+    // Take as many as possible from stack A
+    while (countA < n && sum + a[countA] <= maxSum) {
+        sum += a[countA];
+        countA++;
+    }
+
+    maxCount = countA;
+
+    // Now try adding from stack B and removing from A if needed
+    while (countB < m) {
+        sum += b[countB];
+        countB++;
+
+        while (sum > maxSum && countA > 0) {
+            countA--;
+            sum -= a[countA];
+        }
+
+        if (sum <= maxSum && countA + countB > maxCount) {
+            maxCount = countA + countB;
+        }
+    }
+
+    return maxCount;
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        int n, m, maxSum;
+        scanf("%d %d %d", &n, &m, &maxSum);
+
+        int a[n], b[m];
+        for (int i = 0; i < n; i++) scanf("%d", &a[i]);
+        for (int i = 0; i < m; i++) scanf("%d", &b[i]);
+
+        int result = maxScore(maxSum, a, n, b, m);
+        printf("%d\n", result);
+    }
+
+    return 0;
+}
