@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+int findStartingPump(int petrol[], int distance[], int n) {
+    int start = 0, total = 0, balance = 0;
+
+    for (int i = 0; i < n; i++) {
+        int gain = petrol[i] - distance[i];
+        balance += gain;
+        total += gain;
+
+        if (balance < 0) {
+            start = i + 1;
+            balance = 0;
+        }
+    }
+
+    return (total >= 0) ? start : -1;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    int petrol[n], distance[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d %d", &petrol[i], &distance[i]);
+    }
+
+    int result = findStartingPump(petrol, distance, n);
+    printf("%d\n", result);
+
+    return 0;
+}
