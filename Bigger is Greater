@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+/**
+ * @brief Finds the smallest lexicographically higher string that is a permutation of the input word.
+ * * @param w The input string (word).
+ * @return string The smallest lexicographically higher string, or "no answer".
+ */
+string biggerIsGreater(string w) {
+    int n = w.length();
+    
+    // 1. Find the Pivot (P): Find the rightmost index i such that w[i] < w[i+1]
+    int pivot_index = -1;
+    for (int i = n - 2; i >= 0; --i) {
+        if (w[i] < w[i + 1]) {
+            pivot_index = i;
+            break;
+        }
+    }
+
+    // If no pivot is found, the string is the largest permutation (e.g., "dcba").
+    if (pivot_index == -1) {
+        return "no answer";
+    }
+
+    // 2. Find the Swap Character (S): Find the smallest character w[j] in the suffix (w[pivot_index+1]...)
+    // that is greater than w[pivot_index]. Since the suffix is sorted descendingly,
+    // we search from the right, and the first element greater than w[pivot_index] is the swap character.
+    int swap_index = -1;
+    for (int j = n - 1; j > pivot_index; --j) {
+        if (w[j] > w[pivot_index]) {
+            swap_index = j;
+            break;
+        }
+    }
+
+    // 3. Swap the Pivot and the Swap Character
+    // Note: swap_index is guaranteed to be found because pivot_index was found.
+    swap(w[pivot_index], w[swap_index]);
+
+    // 4. Reverse the Suffix: Reverse the sequence from pivot_index + 1 to the end.
+    // This makes the suffix lexicographically smallest, guaranteeing the final result is the smallest
+    // possible word greater than the original.
+    reverse(w.begin() + pivot_index + 1, w.end());
+
+    return w;
+}
+
+// Main function to handle multiple test cases
+int main() {
+    // Optimization for faster I/O operations
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int T;
+    // Read the number of test cases
+    if (!(cin >> T)) return 0;
+
+    // Process each test case
+    while (T--) {
+        string w;
+        if (!(cin >> w)) break; // Handle read error
+        
+        string result = biggerIsGreater(w);
+        cout << result << "\n";
+    }
+
+    return 0;
+}
