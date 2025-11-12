@@ -1,0 +1,98 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+
+using namespace std;
+
+/**
+ * @brief Calculates the number of cells where lampposts can be placed.
+ * * @param n The number of rows (1-indexed).
+ * @param m The number of columns (1-indexed).
+ * @param k The number of train tracks.
+ * @param track A vector of vectors, where each inner vector is [r, c1, c2].
+ * @return long long The total number of open cells.
+ */
+long long gridlandMetro(int n, int m, int k, const vector<vector<int>>& track) {
+    // 1. Group Tracks by Row
+    // Key: row number (r), Value: list of track segments [c1, c2]
+    map<int, vector<pair<int, int>>> row_tracks;
+    for (const auto& t : track) {
+        int r = t[0];
+        int c1 = t[1];
+        int c2 = t[2];
+        row_tracks[r].push_back({c1, c2});
+    }
+
+    long long total_occupied_cells = 0;
+
+    // 2. Merge Segments and Calculate Occupied Cells for Each Row
+    for (auto const& [row_num, segments] : row_tracks) {
+        // Create a modifiable copy for sorting and merging
+        vector<pair<int, int>> current_segments = segments;
+
+        // a. Sort segments by starting column (c1)
+        sort(current_segments.begin(), current_segments.end());
+
+        long long row_occupied_cells = 0;
+        
+        // Start the merging process with the first segment
+        int current_start = current_segments[0].first;
+        int current_end = current_segments[0].second;
+
+        // b. Iterate and Merge
+        for (size_t i = 1; i < current_segments.size(); ++i) {
+            int next_start = current_segments[i].first;
+            int next_end = current_segments[i].second;
+
+            // Check for overlap: If the next segment starts before or at the end
+            // of the current merged segment, they overlap.
+            if (next_start <= current_end + 1) {
+                // Merge: Extend the end of the current merged segment
+                current_end = max(current_end, next_end);
+            } else {
+                // No overlap: The current merged segment is complete.
+                // Add its length (c2 - c1 + 1) to the row total.
+                row_occupied_cells += (long long)(current_end - current_start + 1);
+                
+                // Start a new merged segment
+                current_start = next_start;
+                current_end = next_end;
+            }
+        }
+        
+        // After the loop, the last merged segment must be added.
+        row_occupied_cells += (long long)(current_end - current_start + 1);
+        
+        // 3. Accumulate total occupied cells
+        total_occupied_cells += row_occupied_cells;
+    }
+
+    // 4. Calculate Lamp Post Locations
+    // Total cells = N * M. Use long long for the product to prevent overflow.
+    long long total_cells = (long long)n * m;
+    
+    return total_cells - total_occupied_cells;
+}
+
+// Main function for handling input and output
+int main() {
+    // Optimization for faster I/O operations
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, m, k;
+    if (!(cin >> n >> m >> k)) return 0;
+
+    vector<vector<int>> track(k, vector<int>(3));
+    for (int i = 0; i < k; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            if (!(cin >> track[i][j])) return 0;
+        }
+    }
+
+    long long result = gridlandMetro(n, m, k, track);
+    cout << result << "\n";
+
+    return 0;
+}
