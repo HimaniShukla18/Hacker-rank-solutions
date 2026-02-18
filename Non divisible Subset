@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int nonDivisibleSubset(int k, int S[], int n) {
+    int *freq = (int *)calloc(k, sizeof(int));
+    
+    // Count frequency of each remainder
+    for (int i = 0; i < n; i++) {
+        freq[S[i] % k]++;
+    }
+
+    int result = 0;
+
+    // At most one element with remainder 0
+    if (freq[0] > 0) {
+        result++;
+    }
+
+    // Handle pairs of remainders
+    for (int i = 1; i <= k / 2; i++) {
+        if (i == k - i) {
+            // Special case: when remainder is exactly half of k
+            result++;
+        } else {
+            result += (freq[i] > freq[k - i]) ? freq[i] : freq[k - i];
+        }
+    }
+
+    free(freq);
+    return result;
+}
+
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+
+    int *S = (int *)malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &S[i]);
+    }
+
+    int answer = nonDivisibleSubset(k, S, n);
+    printf("%d\n", answer);
+
+    free(S);
+    return 0;
+}
